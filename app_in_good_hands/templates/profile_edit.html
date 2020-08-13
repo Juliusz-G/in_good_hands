@@ -1,0 +1,43 @@
+{% extends "__base__.html" %}
+
+{% load static %}
+
+{% block title %}Edycja profilu{% endblock %}
+
+{% block content %}
+
+    <header class="header--form-page">
+
+        {% include 'nav.html' %}
+
+      <div class="slogan container container--90">
+        <div class="slogan--item">
+          <div class="profile">
+            <div class="profile-title">Edytuj dane:</div>
+              <section class="login-page">
+
+                <form action="" method="post">
+                {% csrf_token %}
+                {% if form.errors %}
+                  <p class="form-group">Błędne dane. Spróbuj jeszcze raz!</p>
+                {% endif %}
+                {% for field in form %}
+                  <div class="form-group">
+                    <h3>{{ field.label }}</h3>{{ field }}
+                  </div>
+                {% endfor %}
+
+                  <div class="form-group form-group--buttons">
+                    <a href="{% url 'profile_edit_password' user.id %}" class="btn btn--without-border">Zmień hasło</a>
+                    <button class="btn" type="submit">Zatwierdź</button>
+                  </div>
+                </form>
+
+              </section>
+          </div>
+        </div>
+      </div>
+
+    </header>
+
+{% endblock %}

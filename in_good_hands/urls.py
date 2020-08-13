@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 # local Django
-from app_in_good_hands.views import activate, LandingPage, Login, Logout, Register
+from app_in_good_hands.views import activate, LandingPage, Login, Logout, Register, Profile, ProfileEdit, UpdatePassword
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +26,8 @@ urlpatterns = [
     path('login/', Login.as_view(), name="login"),
     path('logout/', Logout.as_view(), name='logout'),
     path('register/', Register.as_view(), name="register"),
+    path('profile/<int:user_id>', Profile.as_view(), name='profile'),
+    path('profile_edit/<int:user_id>', ProfileEdit.as_view(), name='profile_edit'),
+    path('profile_edit_password/<int:user_id>', UpdatePassword.as_view(), name='profile_edit_password'),
     path('activate/<uidb64>/<token>/', activate, name='activate')
 ]

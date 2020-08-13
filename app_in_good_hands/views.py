@@ -17,7 +17,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 
 # local Django
 from .models import Category, Donation, Institution, User
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ProfileEditForm, UpdatePasswordForm
 
 # Create your views here.
 
@@ -98,3 +98,43 @@ def activate(request, uidb64, token):
         return HttpResponse('Dziękujemy za aktywowanie konta. Możesz się teraz zalogować.')
     else:
         return HttpResponse('Link aktywacyjny niepoprawny!')
+
+
+class Profile(TemplateView):
+    """Displays user info."""
+    template_name = 'profile.html'
+
+    def get_context_data(self, user_id):
+        """Passes data to page."""
+        user = User.objects.get(pk=user_id)
+        donations = Donation.objects.filter(user=self.request.user).order_by("pk")
+
+        ctx = {
+            'user': user,
+            'donations': donations
+        }
+
+        return ctx
+
+
+class ProfileEdit(UpdateView):
+    """Shows profile edit form with password confirmation."""
+    model = User
+    form_class = ProfileEditForm
+    template_name = 'profile_edit.html'
+    success_url = '/'
+
+    def get_object(self, queryset=None):
+        """Returns logged user object."""
+        return self.request.user
+
+
+class UpdatePassword(UpdateView):
+    """Allows user to change password. Logs out user after submit a form."""
+    form_class = UpdatePasswordForm
+    template_name = 'change_password.html'
+    success_url = '/'
+
+    def get_object(self, queryset=None):
+        """Returns logged user object."""
+        return self.request.user
