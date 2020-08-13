@@ -17,7 +17,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 
 # local Django
 from .models import Category, Donation, Institution, User
-from .forms import LoginForm, RegisterForm, ProfileEditForm, UpdatePasswordForm
+from .forms import LoginForm, ProfileEditForm, RegisterForm, UpdatePasswordForm
 
 # Create your views here.
 
@@ -45,6 +45,43 @@ class LandingPage(TemplateView):
             'local_collections': local_collections,
         }
         return ctx
+
+
+@method_decorator(login_required, name='dispatch')
+class AddDonation(View):
+    """Passes content to form (Only for logged users)."""
+    def get(self, request):
+        """Passing object when GET method."""
+        categories = Category.objects.all()
+        institutions = Institution.objects.all()
+
+        ctx = {
+            'categories': categories,
+            'institutions': institutions
+        }
+        return render(request, "form.html", ctx)
+
+    def post(self, request):
+        """Takes data when POST method."""
+        categories = request.POST.get("categories")
+        quantity = request.POST.get("quantity")
+        institution = request.POST.get("institution")
+        address = request.POST.get("address")
+        city = request.POST.get("city")
+        zip_code = request.POST.get("zip_code")
+        phone_number = request.POST.get("phone_number")
+        pick_up_date = request.POST.get("pick_up_date")
+        pick_up_time = request.POST.get("pick_up_time")
+        pick_up_comment = request.POST.get("pick_up_comment")
+
+        if categories and quantity and institution and address and city and zip_code and phone_number and pick_up_date \
+                and pick_up_time and pick_up_comment:
+            donation = Donation.objects.create(categories=categories, quantity=quantity, institution=institution,
+                                               address=address, city=city, zip_code=zip_code, phone_number=phone_number,
+                                               pick_up_date=pick_up_date, pick_up_time=pick_up_time,
+                                               pick_up_comment=pick_up_comment)
+            donation.save()
+        return render(request, "form-confirmation.html", {})
 
 
 class Login(LoginView):
@@ -113,7 +150,6 @@ class Profile(TemplateView):
             'user': user,
             'donations': donations
         }
-
         return ctx
 
 

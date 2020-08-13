@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path
 
 # local Django
-from app_in_good_hands.views import activate, LandingPage, Login, Logout, Register, Profile, ProfileEdit, UpdatePassword
+from app_in_good_hands.views import activate, AddDonation, LandingPage, Login, Logout, Profile, ProfileEdit, Register, \
+    UpdatePassword
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPage.as_view(), name="landing_page"),
+    path('add_donation/', AddDonation.as_view(), name="add_donation"),
     path('login/', Login.as_view(), name="login"),
     path('logout/', Logout.as_view(), name='logout'),
     path('register/', Register.as_view(), name="register"),
