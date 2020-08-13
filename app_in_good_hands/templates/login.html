@@ -1,0 +1,38 @@
+{% extends "__base__.html" %}
+
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+    <header>
+
+      {% include 'nav.html' %}
+
+    </header>
+
+    <section class="login-page">
+
+      <h2>Zaloguj się</h2>
+      <form action="" method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+          <p class="form-group">Błędne dane. Spróbuj jeszcze raz!</p>
+        {% endif %}
+        {% for field in form %}
+          <div class="form-group">
+            {{ field }}<br />
+            <b>{{ field.help_text }}</b>
+          </div>
+        {% endfor %}
+
+        <div class="form-group form-group--buttons">
+          <a href="{% url 'register' %}" class="btn btn--without-border">Załóż konto</a>
+          <button class="btn" type="submit">Zaloguj się</button> 
+        </div>
+      </form>
+
+    </section>
+
+{% endblock %}

@@ -18,9 +18,13 @@ from django.contrib import admin
 from django.urls import path
 
 # local Django
-from app_in_good_hands.views import LandingPage
+from app_in_good_hands.views import activate, LandingPage, Login, Logout, Register
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', LandingPage.as_view(), name="landing_page"),
+    path('login/', Login.as_view(), name="login"),
+    path('logout/', Logout.as_view(), name='logout'),
+    path('register/', Register.as_view(), name="register"),
+    path('activate/<uidb64>/<token>/', activate, name='activate')
 ]
