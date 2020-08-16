@@ -8,6 +8,7 @@
  */
 /* line 11, scss/vendor/_normalize.scss */
 html {
+  scroll-behavior: smooth;
   line-height: 1.15;
   /* 1 */
   -webkit-text-size-adjust: 100%;
@@ -401,6 +402,7 @@ hidden {
 /* line 5, scss/modules/_base.scss */
 html {
   font-size: 62.5%;
+  scroll-behavior: smooth;
 }
 
 /* line 9, scss/modules/_base.scss */

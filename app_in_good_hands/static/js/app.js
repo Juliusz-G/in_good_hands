@@ -295,8 +295,8 @@ document.addEventListener("DOMContentLoaded", function() {
      */
     submit(e) {
       //e.preventDefault();
-      this.currentStep++;
-      this.updateForm();
+      // this.currentStep++;
+      // this.updateForm(e);
     }
   }
   const form = document.querySelector(".form--steps");

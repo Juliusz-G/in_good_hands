@@ -49,10 +49,9 @@
       <div class="form--steps-instructions">
         <div class="form--steps-container">
           <h3>Ważne!</h3>
-          <p data-step="1" class="active">Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć
-              komu najlepiej je przekazać.</p>
-          <p data-step="2">Uzupełnij szczegóły dotyczące Twoich rzeczy. Dzięki temu będziemy wiedzieć komu najlepiej
-              je przekazać.</p>
+          <p data-step="1" class="active">Wybierz jedną lub kilka kategorii, abyśmy mogi posortować instytucje które do
+              nich należą.</p>
+          <p data-step="2">Uzupełnij ilość oddanych worków, żyby kurier mógł się przygotować.</p>
           <p data-step="3">Wybierz jedną, do której trafi Twoja przesyłka.</p>
           <p data-step="4">Podaj adres oraz termin odbioru rzeczy.</p>
         </div>
@@ -104,7 +103,7 @@
             {% for institution in institutions %}
             <div class="form-group form-group--checkbox">
               <label>
-                <input type="radio" name="institution" value="{{ institution.id }}" data-institution-categories="{{ institution.category_ids }}"
+                <input type="radio" name="institution" value="{{ institution.name }}" data-institution-categories="{{ institution.category_ids }}"
                        data-institution-name="{{ institution.name }}"/>
                 <span class="checkbox radio"></span>
                 <span class="description">

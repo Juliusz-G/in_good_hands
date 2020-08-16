@@ -1,0 +1,28 @@
+{% extends "__base__.html" %}
+
+{% load static %}
+
+{% block title %}Dziękujemy!{% endblock %}
+
+{% block content %}
+
+{% block extrahead %}
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.location.href = "http://127.0.0.1:8000/login/";
+        }, 5500);
+    </script>
+{% endblock %}
+
+<header class="header--form-page">
+  <div class="slogan container container--90">
+    <div class="slogan--item">
+      <h1>
+        <span class="uppercase">Dziękujemy za
+            aktywowanie konta. Zaraz zostaniesz przeniesiony na stronę logowania.</span>
+      </h1>
+    </div>
+  </div>
+</header>
+
+{% endblock %}

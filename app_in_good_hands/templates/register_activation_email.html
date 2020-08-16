@@ -1,5 +1,10 @@
 {% autoescape off %}  
 Cześć {{ user.first_name }},
-Prosze kliknąć link, żeby potwierdzić swoją rejestracje konta. http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Dziękujemy za rejestrację konta na naszej stronie. Mamy nadzieje, że twoje rzeczy komuś pomogą.
+
+Prosze kliknąć link, żeby potwierdzić swoją rejestracje konta.
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
 Jeśli nie jesteś {{ user.first_name }}, zignoruj tą wiadomość!
 {% endautoescape %}

@@ -16,29 +16,25 @@
             <span class="uppercase">Profil użytkownika</span>
           </h1>
 
-          <section id="steps" class="steps">
+          <section style="position: sticky;" id="steps" class="steps">
 
             <div class="steps--container">
               <div class="steps--item">
-                <span class="icon icon--hands"></span>
                 <h3>Imię</h3>
                 <p>{{ user.first_name }}</p>
               </div>
 
               <div class="steps--item">
-                <span class="icon icon--arrow"></span>
                 <h3>Nazwisko</h3>
                 <p>{{ user.last_name }}</p>
               </div>
 
               <div class="steps--item">
-                <span class="icon icon--glasses"></span>
                 <h3>Email</h3>
                 <p>{{ user.username }}</p>
               </div>
 
               <div class="steps--item">
-                <span class="icon icon--courier"></span>
                 <h3>Data dołączenia</h3>
                 <p>{{ user.date_joined|date:"d/m/Y" }}</p>
               </div>
@@ -48,23 +44,28 @@
 
           <div class="profile-title">Twoje Dary:</div>
 
-          <div class="help--slides active">
+          <div style="overflow: scroll; max-height: 250px;" class="help--slides active">
+          {% if donations %}
             <ul class="help--slides-items">
               {% for donation in donations %}
               <li>
                 <div class="col">
                   <div class="title">Instytucja: {{ donation.institution }}</div>
-                  <div class="subtitle">Kategorie: {{ donation.categories.get }}</div>
+                  <div class="subtitle">Kategorie: {% for category in donation.categories.all %} | {{ category }}
+                  {% endfor %}</div>
                   <div class="subtitle">Ile worków: {{ donation.quantity }}</div>
                 </div>
 
                 <div class="col">
-                  <div class="text">Kiedy zabrane: {{ donation.pick_up_date|date:"d/m/Y" }} |
+                  <div class="text">Data odbioru: {{ donation.pick_up_date|date:"d/m/Y" }} |
                       {{ donation.pick_up_time|time:"H:i:s" }}</div>
                 </div>
               </li>
               {% endfor %}
             </ul>
+          {% else %}
+          <p>Nie masz jeszcze żadnych przekazanych darów :(</p>
+          {% endif %}
           </div>
         </div>
       </div>

@@ -109,6 +109,7 @@
       <div class="help--slides active" data-id="1">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się
             zajmują, komu pomagają i czego potrzebują.</p>
+        {% if foundations %}
         <ul class="help--slides-items">
           {% for foundation in foundations %}
           <li>
@@ -123,6 +124,9 @@
           </li>
           {% endfor %}
         </ul>
+        {% else %}
+        <p>Na razie nie wspieramy żadnych fundacji.</p>
+        {% endif %}
         <!-- Pagination
         <ul class="help--slides-pagination">
           <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
@@ -137,6 +141,7 @@
       <div class="help--slides" data-id="2">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Organizacji, z którymi współpracujemy. Możesz sprawdzić czym
             się zajmują, komu pomagają i czego potrzebują.</p>
+        {% if organizations %}
         <ul class="help--slides-items">
           {% for organization in organizations %}
           <li>
@@ -151,7 +156,9 @@
           </li>
           {% endfor %}
         </ul>
-
+        {% else %}
+        <p>Na razie nie wspieramy żadnych organizacji pozarządowych.</p>
+        {% endif %}
         <!-- Pagination
         <ul class="help--slides-pagination">
           <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>
@@ -167,6 +174,7 @@
       <div class="help--slides" data-id="3">
         <p>W naszej bazie znajdziesz listę zweryfikowanych Lokalnych zbiórek, z którymi współpracujemy. Możesz sprawdzić
             czym się zajmują, komu pomagają i czego potrzebują.</p>
+        {% if local_collections %}
         <ul class="help--slides-items">
           {% for local_collection in local_collections %}
           <li>
@@ -181,7 +189,9 @@
           </li>
           {% endfor %}
         </ul>
-
+        {% else %}
+        <p>Na razie nie wspieramy żadnych lokalnych zbiórek.</p>
+        {% endif %}
         <!-- Pagination
         <ul class="help--slides-pagination">
           <li><a href="#" class="btn btn--small btn--without-border active" data-page="1">1</a></li>

@@ -29,8 +29,35 @@ pip install requrements.txt
 
 ## Usage
 
+To run a project, first you have to make changes in settings. You can do thins in several ways:
+1. Use python_decouple module (safer)
+2. Fill up a settings in settings.py (non-confidential data)
+
+- For first method install module.
+
+```bash
+pip install python-decouple
+```
+Then check in your settings.py if you have imported module.
+
+```python
+from decouple import config
+```
+Next in the project you will find `.env.example` file. Rename it to `.env` and fill your data in it.
+
+- For the second method in settings.py replaced
+```python
+SECRET_KEY = config('SECRET_KEY')
+```
+to
+```python
+SECRET_KEY = '#nj&njyte......................'
+```
+and do this to every changed setting.
+
 It may happend that you will have to add manually from shell or from django admin site some data. Also as superuser you 
 will have and extra field to enter to admin.
+
 
 ## Support
 

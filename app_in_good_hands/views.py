@@ -7,7 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.db.models import Sum
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes
@@ -18,6 +18,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 # local Django
 from .models import Category, Donation, Institution, User
 from .forms import LoginForm, ProfileEditForm, RegisterForm, UpdatePasswordForm
+
 
 # Create your views here.
 
@@ -50,6 +51,7 @@ class LandingPage(TemplateView):
 @method_decorator(login_required, name='dispatch')
 class AddDonation(View):
     """Passes content to form (Only for logged users)."""
+
     def get(self, request):
         """Passing object when GET method."""
         categories = Category.objects.all()
@@ -62,10 +64,10 @@ class AddDonation(View):
         return render(request, "form.html", ctx)
 
     def post(self, request):
-        """Takes data when POST method."""
-        categories = request.POST.get("categories")
+        """Takes data when POST method. Sends summary email."""
+        categories = request.POST.getlist("categories")
         quantity = request.POST.get("quantity")
-        institution = request.POST.get("institution")
+        institution = Institution.objects.get(name=request.POST.get('institution'))
         address = request.POST.get("address")
         city = request.POST.get("city")
         zip_code = request.POST.get("zip_code")
@@ -73,14 +75,28 @@ class AddDonation(View):
         pick_up_date = request.POST.get("pick_up_date")
         pick_up_time = request.POST.get("pick_up_time")
         pick_up_comment = request.POST.get("pick_up_comment")
+        user = User.objects.get(username=request.user.username)
 
-        if categories and quantity and institution and address and city and zip_code and phone_number and pick_up_date \
-                and pick_up_time and pick_up_comment:
-            donation = Donation.objects.create(categories=categories, quantity=quantity, institution=institution,
-                                               address=address, city=city, zip_code=zip_code, phone_number=phone_number,
-                                               pick_up_date=pick_up_date, pick_up_time=pick_up_time,
-                                               pick_up_comment=pick_up_comment)
-            donation.save()
+        donation = Donation.objects.create(quantity=quantity, institution=institution,
+                                           address=address, city=city, zip_code=zip_code, phone_number=phone_number,
+                                           pick_up_date=pick_up_date, pick_up_time=pick_up_time,
+                                           pick_up_comment=pick_up_comment, user=user)
+        donation.categories.set(categories)
+        donation.save()
+        if donation:
+            current_site = get_current_site(self.request)
+            mail_subject = 'Podsumowanie twojego zamówienia.'
+            message = render_to_string('donation_summary_email.html', {
+                'user': user,
+                'donation': donation,
+                'domain': current_site.domain,
+            })
+            to_email = request.user.username
+            email = EmailMessage(
+                mail_subject, message, to=[to_email]
+            )
+            email.attach_file('app_in_good_hands/static/images/icon-bag.png')
+            email.send()
         return render(request, "form-confirmation.html", {})
 
 
@@ -132,7 +148,7 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        return HttpResponse('Dziękujemy za aktywowanie konta. Możesz się teraz zalogować.')
+        return render(request, 'after_activation_send.html', {})
     else:
         return HttpResponse('Link aktywacyjny niepoprawny!')
 
@@ -143,11 +159,9 @@ class Profile(TemplateView):
 
     def get_context_data(self, user_id):
         """Passes data to page."""
-        user = User.objects.get(pk=user_id)
-        donations = Donation.objects.filter(user=self.request.user).order_by("pk")
+        donations = Donation.objects.filter(user=self.request.user).order_by("-pk")
 
         ctx = {
-            'user': user,
             'donations': donations
         }
         return ctx

@@ -1,0 +1,16 @@
+{% autoescape off %}  
+Cześć {{ user.first_name }},
+
+Dziękujemy za twoją dobroczynność :)
+
+Podumowanie znajduje się poniżej.
+
+Oddane worki: {{ donation.quantity }}
+Instytucja: {{ donation.institution }}
+Data odbioru: {{ donation.pick_up_date }} | {{ donation.pick_up_time }}
+Miejsce odbioru: {{ donation.city }}, ul.{{ donation.address }}
+
+Wróć na swój profil http://{{ domain }}/profile/{{ user.id }}
+
+Jeśli nie jesteś {{ user.first_name }}, zignoruj tą wiadomość!
+{% endautoescape %}
